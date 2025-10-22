@@ -6,7 +6,7 @@ export const closeModal = (modal) => {
   modal.classList.remove("popup_is-opened");
 };
 
-export const closeModalOnEscapeButton = (
+const closeModalOnEscapeButton = (
   event,
   modal,
   onCloseCallback = closeModal
@@ -16,7 +16,7 @@ export const closeModalOnEscapeButton = (
   }
 };
 
-export const closeModalOnOverlayClick = (
+const closeModalOnOverlayClick = (
   event,
   modal,
   onCloseCallback = closeModal
@@ -26,7 +26,7 @@ export const closeModalOnOverlayClick = (
   }
 };
 
-export const closeModalOnCloseClick = (
+const closeModalOnCloseClick = (
   event,
   modal,
   onCloseCallback = closeModal
