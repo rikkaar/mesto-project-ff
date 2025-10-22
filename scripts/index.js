@@ -38,10 +38,6 @@ const setEditProfileFormInitialValues = () => {
   jobInput.value = jobElement.textContent;
 };
 
-const resetEditProfileForm = () => {
-  editForm.reset();
-};
-
 const handleEditProfileFormSubmit = (evt) => {
   evt.preventDefault();
   nameElement.textContent = nameInput.value;
@@ -70,7 +66,6 @@ const handleNewCardFormSubmit = (evt) => {
 
 setBaseModalEventListeners(popupEdit, (modal) => {
   closeModal(modal);
-  resetEditProfileForm();
 });
 
 setBaseModalEventListeners(popupNewCard);
