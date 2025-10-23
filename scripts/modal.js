@@ -73,16 +73,3 @@ export const openModalOnElementClick = (
     onOpenCallback(modal, onCloseCallback)
   );
 };
-
-export const openModalOnClassNameClick = (
-  triggerClass,
-  modal,
-  onOpenCallback = openModal,
-  onCloseCallback = closeModal
-) => {
-  document.addEventListener("click", (event) => {
-    if (event.target.matches(triggerClass)) {
-      onOpenCallback(modal, onCloseCallback, event);
-    }
-  });
-};
