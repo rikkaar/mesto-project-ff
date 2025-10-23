@@ -2,9 +2,9 @@ const cardTemplate = document.querySelector("#card-template");
 
 export const createCard = (
   cardData,
-  onLikeButtonClickEvent,
-  onDeleteButtonClickEvent,
-  onCardImageClickEvent
+  handleLikeCard,
+  handleDeleteCard,
+  handleCardImageClick
 ) => {
   const cardElement = cardTemplate.content.cloneNode(true);
   const cardImage = cardElement.querySelector(".card__image");
@@ -17,9 +17,9 @@ export const createCard = (
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const likeButton = cardElement.querySelector(".card__like-button");
 
-  cardImage.addEventListener("click", onCardImageClickEvent);
-  likeButton.addEventListener("click", onLikeButtonClickEvent);
-  deleteButton.addEventListener("click", onDeleteButtonClickEvent);
+  cardImage.addEventListener("click", handleCardImageClick);
+  likeButton.addEventListener("click", handleLikeCard);
+  deleteButton.addEventListener("click", handleDeleteCard);
 
   return cardElement;
 };
