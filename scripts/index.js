@@ -64,9 +64,7 @@ const handleNewCardFormSubmit = (evt) => {
   resetNewCardForm();
 };
 
-setBaseModalEventListeners(popupEdit, (modal) => {
-  closeModal(modal);
-});
+setBaseModalEventListeners(popupEdit);
 
 setBaseModalEventListeners(popupNewCard);
 
@@ -77,18 +75,20 @@ openModalOnElementClick(popupEditTrigger, popupEdit, (modal) => {
   openModal(modal);
 });
 
-openModalOnElementClick(popupNewCardTrigger, popupNewCard, (modal) => {
-  openModal(modal);
-});
+openModalOnElementClick(popupNewCardTrigger, popupNewCard);
 
-openModalOnClassNameClick(".card__image", popupImage, (modal, event) => {
-  const cardData = {
-    name: event.target.alt,
-    link: event.target.src,
-  };
-  setCardImageInPopup(cardData, popupImage);
-  openModal(modal);
-});
+openModalOnClassNameClick(
+  ".card__image",
+  popupImage,
+  (modal, _closeCallback, event) => {
+    const cardData = {
+      name: event.target.alt,
+      link: event.target.src,
+    };
+    setCardImageInPopup(cardData, popupImage);
+    openModal(modal);
+  }
+);
 
 placesList.addEventListener("click", (event) => {
   if (event.target.matches(".card__delete-button")) {
