@@ -1,16 +1,3 @@
-export const openModal = (modal, onCloseCallback = onclose) => {
-  modal.classList.add("popup_is-opened");
-
-  const handleEscapeKey = (event) => {
-    if (event.key === "Escape") {
-      onCloseCallback(modal);
-    }
-  };
-
-  modal._handleEscapeKey = handleEscapeKey;
-  document.addEventListener("keydown", handleEscapeKey);
-};
-
 export const closeModal = (modal) => {
   modal.classList.remove("popup_is-opened");
 
@@ -20,43 +7,45 @@ export const closeModal = (modal) => {
   }
 };
 
-const closeModalOnEscapeButton = (
-  event,
-  modal,
-  onCloseCallback = closeModal
-) => {
+export const openModal = (modal) => {
+  modal.classList.add("popup_is-opened");
+
+  const handleEscapeKey = (event) => {
+    if (event.key === "Escape") {
+      onclose(modal);
+    }
+  };
+
+  modal._handleEscapeKey = handleEscapeKey;
+  document.addEventListener("keydown", handleEscapeKey);
+};
+
+const closeModalOnEscapeButton = (event, modal) => {
   if (event.key === "Escape") {
-    onCloseCallback(modal);
+    closeModal(modal);
   }
 };
 
-const closeModalOnOverlayClick = (
-  event,
-  modal,
-  onCloseCallback = closeModal
-) => {
+const closeModalOnOverlayClick = (event, modal) => {
   if (event.currentTarget === event.target) {
-    onCloseCallback(modal);
+    closeModal(modal);
   }
 };
 
-const closeModalOnCloseClick = (event, modal, onCloseCallback = closeModal) => {
+const closeModalOnCloseClick = (event, modal) => {
   if (event.target.matches(".popup__close")) {
-    onCloseCallback(modal);
+    closeModal(modal);
   }
 };
 
-export const setBaseModalEventListeners = (
-  modal,
-  onCloseCallback = closeModal
-) => {
+export const setBaseModalEventListeners = (modal) => {
   const handleModalClick = (event) => {
-    closeModalOnCloseClick(event, modal, onCloseCallback);
-    closeModalOnOverlayClick(event, modal, onCloseCallback);
+    closeModalOnCloseClick(event, modal);
+    closeModalOnOverlayClick(event, modal);
   };
 
   const handleEscapeKey = (event) => {
-    closeModalOnEscapeButton(event, modal, onCloseCallback);
+    closeModalOnEscapeButton(event, modal);
   };
 
   modal.addEventListener("click", handleModalClick);
@@ -66,10 +55,7 @@ export const setBaseModalEventListeners = (
 export const openModalOnElementClick = (
   trigger,
   modal,
-  onOpenCallback = openModal,
-  onCloseCallback = closeModal
+  onOpenCallback = openModal
 ) => {
-  trigger.addEventListener("click", () =>
-    onOpenCallback(modal, onCloseCallback)
-  );
+  trigger.addEventListener("click", () => onOpenCallback(modal));
 };
