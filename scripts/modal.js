@@ -1,29 +1,19 @@
+const closeModalOnEscapeButton = (event) => {
+  if (event.key === "Escape") {
+    closeModal(document.querySelector(".popup_is-opened"));
+  }
+};
+
 export const closeModal = (modal) => {
   modal.classList.remove("popup_is-opened");
 
-  if (modal._handleEscapeKey) {
-    document.removeEventListener("keydown", modal._handleEscapeKey);
-    delete modal._handleEscapeKey;
-  }
+  document.removeEventListener("keydown", closeModalOnEscapeButton);
 };
 
 export const openModal = (modal) => {
   modal.classList.add("popup_is-opened");
 
-  const handleEscapeKey = (event) => {
-    if (event.key === "Escape") {
-      onclose(modal);
-    }
-  };
-
-  modal._handleEscapeKey = handleEscapeKey;
-  document.addEventListener("keydown", handleEscapeKey);
-};
-
-const closeModalOnEscapeButton = (event, modal) => {
-  if (event.key === "Escape") {
-    closeModal(modal);
-  }
+  document.addEventListener("keydown", closeModalOnEscapeButton);
 };
 
 const closeModalOnOverlayClick = (event, modal) => {
@@ -44,12 +34,7 @@ export const setBaseModalEventListeners = (modal) => {
     closeModalOnOverlayClick(event, modal);
   };
 
-  const handleEscapeKey = (event) => {
-    closeModalOnEscapeButton(event, modal);
-  };
-
   modal.addEventListener("click", handleModalClick);
-  document.addEventListener("keydown", handleEscapeKey);
 };
 
 export const openModalOnElementClick = (
