@@ -24,9 +24,13 @@ const popupNewCardTrigger = document.querySelector(".profile__add-button");
 const editForm = document.querySelector('form[name="edit-profile"]');
 const editFormSubmitButton = editForm.querySelector('button[type="submit"]');
 const newCardForm = document.querySelector('form[name="new-place"]');
-const newCardFormSubmitButton = newCardForm.querySelector('button[type="submit"]');
+const newCardFormSubmitButton = newCardForm.querySelector(
+  'button[type="submit"]'
+);
 const avatarForm = document.querySelector('form[name="avatar"]');
-const avatarFormSubmitButton = avatarForm.querySelector('button[type="submit"]');
+const avatarFormSubmitButton = avatarForm.querySelector(
+  'button[type="submit"]'
+);
 const deleteCardSubmitButton = popupDelete.querySelector(
   'button[type="submit"]'
 );
@@ -82,12 +86,12 @@ const handleConfirmDelete = () => {
     .deleteCard(cardId)
     .then(() => {
       cardElement.remove();
+      delete deleteCardSubmitButton.dataset.cardId;
+      closeModal(popupDelete);
     })
     .catch(api.handleApiError)
     .finally(() => {
-      delete deleteCardSubmitButton.dataset.cardId;
       deleteCardSubmitButton.textContent = "Да";
-      closeModal(popupDelete);
     });
 };
 
@@ -126,9 +130,9 @@ const handleLikeCard = (event) => {
   );
 
   if (isCurrentlyLiked) {
-    return handleDeleteLikeCard(cardId, likeButton, likeCounter);
+    return handleDeleteLikeCard(cardElement.id, likeButton, likeCounter);
   } else {
-    return handleAddLikeCard(cardId, likeButton, likeCounter);
+    return handleAddLikeCard(cardElement.id, likeButton, likeCounter);
   }
 };
 
@@ -145,11 +149,13 @@ const handleEditProfileFormSubmit = (evt) => {
       name: nameInput.value,
       about: jobInput.value,
     })
-    .then(updateUserProfile)
+    .then((data) => {
+      updateUserProfile(data);
+      closeModal(popupEdit);
+    })
     .catch(api.handleApiError)
     .finally(() => {
       editFormSubmitButton.textContent = "Сохранить";
-      closeModal(popupEdit);
     });
 };
 
@@ -160,16 +166,16 @@ const handleEditAvatarFormSubmit = (evt) => {
     .changeProfileImage({
       avatar: avatarLinkInput.value,
     })
-    .then(updateUserProfile)
+    .then((data) => {
+      updateUserProfile(data);
+      avatarForm.reset();
+      closeModal(popupAvatar);
+    })
     .catch(api.handleApiError)
     .finally(() => {
       avatarFormSubmitButton.textContent = "Сохранить";
       closeModal(popupAvatar);
     });
-};
-
-const resetNewCardForm = () => {
-  newCardForm.reset();
 };
 
 const handleNewCardFormSubmit = (evt) => {
@@ -189,12 +195,12 @@ const handleNewCardFormSubmit = (evt) => {
         handleCardImageClick
       );
       placesList.prepend(cardElement);
+      closeModal(popupNewCard);
+      newCardForm.reset();
     })
     .catch(api.handleApiError)
     .finally(() => {
       newCardFormSubmitButton.textContent = "Сохранить";
-      closeModal(popupNewCard);
-      resetNewCardForm();
     });
 };
 
@@ -209,8 +215,8 @@ setBaseModalEventListeners(popupImage);
 setBaseModalEventListeners(popupDelete);
 
 openModalOnElementClick(popupEditTrigger, popupEdit, (modal) => {
-  clearValidation(editForm, validationConfig);
   setEditProfileFormInitialValues();
+  clearValidation(editForm, validationConfig);
   openModal(modal);
 });
 
