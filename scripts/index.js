@@ -245,11 +245,9 @@ const appendCardsToDOM = (cardDataList) => {
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([userInfo, initialCards]) => {
-    console.log(userInfo);
     userId = userInfo._id;
     updateUserProfile(userInfo);
 
-    console.log(initialCards);
     appendCardsToDOM(initialCards);
   })
   .catch(api.handleApiError);
