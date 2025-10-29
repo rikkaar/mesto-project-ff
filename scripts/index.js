@@ -24,9 +24,9 @@ const popupNewCardTrigger = document.querySelector(".profile__add-button");
 const editForm = document.querySelector('form[name="edit-profile"]');
 const editFormSubmitButton = editForm.querySelector('button[type="submit"]');
 const newCardForm = document.querySelector('form[name="new-place"]');
-const newCardFormSubmitButton = editForm.querySelector('button[type="submit"]');
+const newCardFormSubmitButton = newCardForm.querySelector('button[type="submit"]');
 const avatarForm = document.querySelector('form[name="avatar"]');
-const avatarFormSubmitButton = editForm.querySelector('button[type="submit"]');
+const avatarFormSubmitButton = avatarForm.querySelector('button[type="submit"]');
 const deleteCardSubmitButton = popupDelete.querySelector(
   'button[type="submit"]'
 );
