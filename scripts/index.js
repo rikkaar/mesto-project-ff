@@ -174,6 +174,7 @@ const resetNewCardForm = () => {
 
 const handleNewCardFormSubmit = (evt) => {
   evt.preventDefault();
+  newCardFormSubmitButton.textContent = "Сохранение...";
   api
     .addNewCard({
       name: placeNameInput.value,
@@ -191,7 +192,7 @@ const handleNewCardFormSubmit = (evt) => {
     })
     .catch(api.handleApiError)
     .finally(() => {
-      editFormSubmitButton.textContent = "Сохранить";
+      newCardFormSubmitButton.textContent = "Сохранить";
       closeModal(popupNewCard);
       resetNewCardForm();
     });
@@ -230,24 +231,20 @@ deleteCardSubmitButton.addEventListener("click", handleConfirmDelete);
 
 enableValidation(validationConfig);
 
-const appendCardsToDOM = (cardDataList) => {
-  cardDataList.forEach((cardData) => {
-    const cardElement = createCard(
-      cardData,
-      userId,
-      handleLikeCard,
-      handleDeleteCard,
-      handleCardImageClick
-    );
-    placesList.append(cardElement);
-  });
-};
-
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([userInfo, initialCards]) => {
     userId = userInfo._id;
     updateUserProfile(userInfo);
 
-    appendCardsToDOM(initialCards);
+    initialCards.forEach((cardData) => {
+      const cardElement = createCard(
+        cardData,
+        userId,
+        handleLikeCard,
+        handleDeleteCard,
+        handleCardImageClick
+      );
+      placesList.append(cardElement);
+    });
   })
   .catch(api.handleApiError);
