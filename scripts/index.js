@@ -68,15 +68,10 @@ const updateUserProfile = ({ name, about, avatar }) => {
   avatarElement.src = avatar;
 };
 
-const handleCardImageClick = (event) => {
-  const cardData = {
-    name: event.target.alt,
-    link: event.target.src,
-  };
-
-  modalImage.src = cardData.link;
-  modalImage.alt = cardData.name;
-  modalCaption.textContent = cardData.name;
+const handleCardImageClick = (link, name) => {
+  modalImage.src = link;
+  modalImage.alt = name;
+  modalCaption.textContent = name;
 
   openModal(popupImage);
 };

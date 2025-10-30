@@ -50,7 +50,10 @@ export const createCard = (
     deleteButton.hidden = true;
   }
 
-  cardImage.addEventListener("click", handleCardImageClick);
+  cardImage.addEventListener("click", () =>
+    handleCardImageClick(cardData.link, cardData.name)
+  );
+
   likeButton.addEventListener("click", () =>
     handleLikeCard(cardData._id, likeButton, likeCounter)
   );
