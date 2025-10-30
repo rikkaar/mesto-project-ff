@@ -1,21 +1,22 @@
+import { addLikeCard, deleteLikeCard, handleApiError } from "./api.js";
+
 const cardTemplate = document.querySelector("#card-template");
 
-const getIsCardCreatedByUser = (cardData, userId) => {
-  return cardData.owner._id === userId;
-};
+const handleLikeCard = (cardId, likeButton, likeCounter) => {
+  const isLiked = likeButton.classList.contains("card__like-button_is-active");
+  const likeAction = isLiked ? deleteLikeCard : addLikeCard;
 
-const geLikesCount = (cardData) => {
-  return cardData.likes.length;
-};
-
-const getIsLikedByMe = (cardData, userId) => {
-  return cardData.likes.some((like) => like._id === userId);
+  likeAction(cardId)
+    .then((cardData) => {
+      likeButton.classList.toggle("card__like-button_is-active");
+      likeCounter.textContent = cardData.likes.length;
+    })
+    .catch(handleApiError);
 };
 
 export const createCard = (
   cardData,
   userId,
-  handleLikeCard,
   handleDeleteCard,
   handleCardImageClick
 ) => {
@@ -31,18 +32,17 @@ export const createCard = (
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
+  likeCounter.textContent = cardData.likes.length;
 
-  const isCardCreatedByUser = getIsCardCreatedByUser(cardData, userId);
-  const likesCount = geLikesCount(cardData);
-  const isLikedByMe = getIsLikedByMe(cardData, userId);
-
-  likeCounter.textContent = likesCount;
+  const isLikedByMe = cardData.likes.some((like) => like._id === userId);
 
   if (isLikedByMe) {
     likeButton.classList.add("card__like-button_is-active");
   }
 
-  if (isCardCreatedByUser) {
+  const isCreatedByUser = cardData.owner._id === userId;
+
+  if (isCreatedByUser) {
     deleteButton.addEventListener("click", () =>
       handleDeleteCard(cardElement, cardData._id)
     );
@@ -51,7 +51,9 @@ export const createCard = (
   }
 
   cardImage.addEventListener("click", handleCardImageClick);
-  likeButton.addEventListener("click", handleLikeCard);
+  likeButton.addEventListener("click", () =>
+    handleLikeCard(cardData._id, likeButton, likeCounter)
+  );
 
   return cardFragment;
 };

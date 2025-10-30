@@ -103,41 +103,6 @@ const handleDeleteCard = (cardElement, cardId) => {
   openModal(popupDelete);
 };
 
-const handleDeleteLikeCard = (cardId, likeButton, likeCounter) => {
-  api
-    .deleteLikeCard(cardId)
-    .then((cardData) => {
-      likeButton.classList.remove("card__like-button_is-active");
-      likeCounter.textContent = cardData.likes.length;
-    })
-    .catch(api.handleApiError);
-};
-
-const handleAddLikeCard = (cardId, likeButton, likeCounter) => {
-  api
-    .addLikeCard(cardId)
-    .then((cardData) => {
-      likeButton.classList.add("card__like-button_is-active");
-      likeCounter.textContent = cardData.likes.length;
-    })
-    .catch(api.handleApiError);
-};
-
-const handleLikeCard = (event) => {
-  const cardElement = event.target.closest(".card");
-  const likeCounter = cardElement.querySelector(".card__like-counter");
-  const likeButton = event.target;
-  const isCurrentlyLiked = likeButton.classList.contains(
-    "card__like-button_is-active"
-  );
-
-  if (isCurrentlyLiked) {
-    return handleDeleteLikeCard(cardElement.id, likeButton, likeCounter);
-  } else {
-    return handleAddLikeCard(cardElement.id, likeButton, likeCounter);
-  }
-};
-
 const setEditProfileFormInitialValues = () => {
   nameInput.value = nameElement.textContent;
   jobInput.value = jobElement.textContent;
@@ -191,7 +156,6 @@ const handleNewCardFormSubmit = (evt) => {
       const cardElement = createCard(
         cardData,
         userId,
-        handleLikeCard,
         handleDeleteCard,
         handleCardImageClick
       );
@@ -247,7 +211,6 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
       const cardElement = createCard(
         cardData,
         userId,
-        handleLikeCard,
         handleDeleteCard,
         handleCardImageClick
       );
