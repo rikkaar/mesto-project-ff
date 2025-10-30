@@ -11,6 +11,9 @@ import * as api from "./api";
 
 let userId;
 
+let cardElementToDelete;
+let cardIdToDelete;
+
 const popupEdit = document.querySelector(".popup_type_edit");
 const popupAvatar = document.querySelector(".popup_type_avatar");
 const popupNewCard = document.querySelector(".popup_type_new-card");
@@ -79,14 +82,13 @@ const handleCardImageClick = (event) => {
 };
 
 const handleConfirmDelete = () => {
-  const cardId = deleteCardSubmitButton.dataset.cardId;
-  const cardElement = document.getElementById(cardId);
   deleteCardSubmitButton.textContent = "Удаление...";
   api
-    .deleteCard(cardId)
+    .deleteCard(cardIdToDelete)
     .then(() => {
-      cardElement.remove();
-      delete deleteCardSubmitButton.dataset.cardId;
+      cardElementToDelete.remove();
+      cardIdToDelete = undefined;
+      cardElementToDelete = undefined;
       closeModal(popupDelete);
     })
     .catch(api.handleApiError)
@@ -95,9 +97,9 @@ const handleConfirmDelete = () => {
     });
 };
 
-const handleDeleteCard = (event) => {
-  const cardElement = event.target.closest(".card");
-  deleteCardSubmitButton.dataset.cardId = cardElement.id;
+const handleDeleteCard = (cardElement, cardId) => {
+  cardElementToDelete = cardElement;
+  cardIdToDelete = cardId;
   openModal(popupDelete);
 };
 

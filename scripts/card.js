@@ -19,15 +19,15 @@ export const createCard = (
   handleDeleteCard,
   handleCardImageClick
 ) => {
-  const cardElement = cardTemplate.content.cloneNode(true);
-  const cardItem = cardElement.querySelector(".card");
-  const cardImage = cardElement.querySelector(".card__image");
-  const cardTitle = cardElement.querySelector(".card__title");
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  const likeButton = cardElement.querySelector(".card__like-button");
-  const likeCounter = cardElement.querySelector(".card__like-counter");
+  const cardFragment = cardTemplate.content.cloneNode(true);
+  const cardElement = cardFragment.querySelector(".card");
+  const cardImage = cardFragment.querySelector(".card__image");
+  const cardTitle = cardFragment.querySelector(".card__title");
+  const deleteButton = cardFragment.querySelector(".card__delete-button");
+  const likeButton = cardFragment.querySelector(".card__like-button");
+  const likeCounter = cardFragment.querySelector(".card__like-counter");
 
-  cardItem.id = cardData._id;
+  cardElement.id = cardData._id;
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
@@ -43,7 +43,9 @@ export const createCard = (
   }
 
   if (isCardCreatedByUser) {
-    deleteButton.addEventListener("click", handleDeleteCard);
+    deleteButton.addEventListener("click", () =>
+      handleDeleteCard(cardElement, cardData._id)
+    );
   } else {
     deleteButton.hidden = true;
   }
@@ -51,5 +53,5 @@ export const createCard = (
   cardImage.addEventListener("click", handleCardImageClick);
   likeButton.addEventListener("click", handleLikeCard);
 
-  return cardElement;
+  return cardFragment;
 };
