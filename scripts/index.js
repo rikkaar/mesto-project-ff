@@ -174,7 +174,6 @@ const handleEditAvatarFormSubmit = (evt) => {
     .catch(api.handleApiError)
     .finally(() => {
       avatarFormSubmitButton.textContent = "Сохранить";
-      closeModal(popupAvatar);
     });
 };
 
